@@ -13,8 +13,8 @@
 }:
 
 python3.pkgs.buildPythonApplication rec {
-  pname = "gtk-doc";
-  version = "1.32";
+  pname = "gtk-doc-unstable";
+  version = "2020-08-21";
 
   format = "other";
 
@@ -22,8 +22,9 @@ python3.pkgs.buildPythonApplication rec {
     domain = "gitlab.gnome.org";
     owner = "GNOME";
     repo = pname;
-    rev = "GTK_DOC_${stdenv.lib.replaceStrings ["."] ["_"] version }";
-    sha256 = "14fihxj662gg4ln1ngff6s52zzkpbcc58qa0nxysxypnhp0h4ypk";
+    # 1.32.1 is needed for glib, see https://gitlab.gnome.org/GNOME/gtk-doc/-/issues/128
+    rev = "b2092227f5b6718c27380d6a7bd6842ffa008d56";
+    sha256 = "0jqkyj96dm4c45j4axs4196qiqsphbg362n4fywh56hsmr3cx7bj";
   };
 
   patches = [
