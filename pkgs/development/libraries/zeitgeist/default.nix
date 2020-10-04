@@ -14,7 +14,7 @@
 , gtk3
 , json-glib
 , librdf_raptor2
-, pythonSupport ? true
+, pythonSupport ? false
 , python2Packages
 }:
 
