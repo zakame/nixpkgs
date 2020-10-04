@@ -17,8 +17,6 @@
 , docbook-xsl-nons
 , at-spi2-core
 , libstartup_notification
-, telepathy-glib
-, telepathy-logger
 , unzip
 , shared-mime-info
 , libgweather
@@ -145,7 +143,6 @@ stdenv.mkDerivation rec {
     librsvg
     networkmanager
     libstartup_notification
-    telepathy-glib
     gjs
     mutter
     libpulseaudio
@@ -161,7 +158,6 @@ stdenv.mkDerivation rec {
     upower
     ibus
     gnome-desktop
-    telepathy-logger
     gnome-settings-daemon
     gobject-introspection
 
