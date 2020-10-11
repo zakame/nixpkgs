@@ -7722,8 +7722,6 @@ in {
 
   zeep = callPackage ../development/python-modules/zeep { };
 
-  zeitgeist = disabledIf isPy3k (toPythonModule (pkgs.zeitgeist.override { python2Packages = self; })).py;
-
   zerobin = callPackage ../development/python-modules/zerobin { };
 
   zeroc-ice = callPackage ../development/python-modules/zeroc-ice { };
