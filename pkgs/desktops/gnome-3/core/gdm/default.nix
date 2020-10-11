@@ -5,6 +5,7 @@
 , meson
 , ninja
 , python3
+, rsync
 , pkg-config
 , glib
 , itstool
@@ -62,7 +63,7 @@ stdenv.mkDerivation rec {
     "-Dudev-dir=${placeholder "out"}/lib/udev/rules.d"
     "-Dsystemdsystemunitdir=${placeholder "out"}/lib/systemd/system"
     "-Dsystemduserunitdir=${placeholder "out"}/lib/systemd/user"
-    "-Dsysconfsubdir=${placeholder "out"}/etc"
+    "-Dsysconfsubdir=/etc"
   ];
 
   nativeBuildInputs = [
@@ -73,6 +74,7 @@ stdenv.mkDerivation rec {
     ninja
     pkg-config
     python3
+    rsync
   ];
 
   buildInputs = [
@@ -131,8 +133,28 @@ stdenv.mkDerivation rec {
   '';
 
   preInstall = ''
-    install -D ${override} $out/share/glib-2.0/schemas/org.gnome.login-screen.gschema.override
+    install -D ${override} ${DESTDIR}/$out/share/glib-2.0/schemas/org.gnome.login-screen.gschema.override
   '';
+
+  postInstall = ''
+    # Move stuff from DESTDIR to proper location.
+    # We use rsync to merge the directories.
+    rsync --archive "${DESTDIR}/etc" "$out"
+    rm --recursive "${DESTDIR}/etc"
+    for o in $outputs; do
+        rsync --archive "${DESTDIR}/''${!o}" "$(dirname "''${!o}")"
+        rm --recursive "${DESTDIR}/''${!o}"
+    done
+    rmdir --ignore-fail-on-non-empty --parents "${DESTDIR}/nix/store"
+  '';
+
+  # HACK: We want to install configuration files to $out/etc
+  # but GDM should read them from /etc on a NixOS system.
+  # With autotools, it was possible to override Make variables
+  # at install time but Meson does not support this
+  # so we need to convince it to install all files to a temporary
+  # location using DESTDIR and then move it to proper one in postInstall.
+  DESTDIR = "${placeholder "out"}/dest";
 
   passthru = {
     updateScript = gnome3.updateScript {
