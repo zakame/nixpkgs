@@ -7722,6 +7722,8 @@ in {
 
   zeep = callPackage ../development/python-modules/zeep { };
 
+  zeitgeist = (toPythonModule (pkgs.zeitgeist.override { python3 = python; })).py;
+
   zerobin = callPackage ../development/python-modules/zerobin { };
 
   zeroc-ice = callPackage ../development/python-modules/zeroc-ice { };
