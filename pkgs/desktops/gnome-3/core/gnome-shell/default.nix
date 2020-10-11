@@ -1,5 +1,4 @@
 { fetchurl
-, fetchFromGitLab
 , fetchpatch
 , substituteAll
 , stdenv
@@ -66,19 +65,14 @@ let
 in
 stdenv.mkDerivation rec {
   pname = "gnome-shell";
-  version = "3.38.0";
+  version = "3.38.1";
 
   outputs = [ "out" "devdoc" ];
 
   src = fetchurl {
     url = "mirror://gnome/sources/gnome-shell/${stdenv.lib.versions.majorMinor version}/${pname}-${version}.tar.xz";
-    sha256 = "15qabakial0jcsqkq1xg4fsssarixq6aqqksikdfcpl7q0xl09n6";
+    sha256 = "1d0br74gxwnqbh102yjkszkc6fc4yd6p5lcs6bxcpi33chly72dp";
   };
-
-  # See https://mail.gnome.org/archives/distributor-list/2020-September/msg00001.html
-  prePatch = (import ../gvc-with-ucm-prePatch.nix {
-    inherit fetchFromGitLab;
-  });
 
   patches = [
     # Hardcode paths to various dependencies so that they can be found at runtime.
