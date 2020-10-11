@@ -124,6 +124,9 @@ let self = stdenv.mkDerivation rec {
     ${glib.dev}/bin/glib-compile-schemas "$out/share/glib-2.0/schemas"
   '';
 
+  # Install udev files into our own tree.
+  PKG_CONFIG_UDEV_UDEVDIR = "${placeholder "out"}/lib/udev/rules.d";
+
   passthru = {
     libdir = "${self}/lib/mutter-6";
 
