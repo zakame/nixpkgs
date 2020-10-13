@@ -122,6 +122,13 @@ stdenv.mkDerivation rec {
     # Set up the environment properly when launching sessions
     # https://github.com/NixOS/nixpkgs/issues/48255
     ./reset-environment.patch
+
+    # Fix runtime patch location.
+    # https://gitlab.gnome.org/GNOME/gdm/-/merge_requests/114
+    (fetchpatch {
+      url = "https://gitlab.gnome.org/GNOME/gdm/-/commit/9d841d681f3d1c58e3df51a98421257f774cd185.patch";
+      sha256 = "0lf5kpz9ghylqlbybc0mpfsvr4i29z1ag8wf6j1918hjrfcipnxj";
+    })
   ];
 
   postPatch = ''
