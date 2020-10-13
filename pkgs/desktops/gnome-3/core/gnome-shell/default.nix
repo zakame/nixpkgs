@@ -22,7 +22,6 @@
 , librsvg
 , geoclue2
 , perl
-, docbook_xml_dtd_412
 , docbook_xml_dtd_42
 , docbook_xml_dtd_43
 , desktop-file-utils
@@ -96,13 +95,6 @@ stdenv.mkDerivation rec {
       revert = true;
       sha256 = "14h7ahlxgly0n3sskzq9dhxzbyb04fn80pv74vz1526396676dzl";
     })
-
-    # Remove include of missing file preventing docs from building.
-    # https://gitlab.gnome.org/GNOME/gnome-shell/merge_requests/1448
-    (fetchpatch {
-      url = "https://gitlab.gnome.org/GNOME/gnome-shell/commit/84cff8920509f99be47c017bd8bdf8e45ea90535.patch";
-      sha256 = "9bFfT7bHMdxPjDUvjoIrFQ3eddQv/kXyeTOAM+7eUm8=";
-    })
   ];
 
   nativeBuildInputs = [
@@ -111,7 +103,7 @@ stdenv.mkDerivation rec {
     pkg-config
     gettext
     docbook-xsl-nons
-    docbook_xml_dtd_412
+    # Switch to 4.5 in the 40.
     docbook_xml_dtd_42
     docbook_xml_dtd_43
     gtk-doc
