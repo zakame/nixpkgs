@@ -48,6 +48,7 @@
 , gtk3
 , sassc
 , systemd
+, pipewire
 , gst_all_1
 , adwaita-icon-theme
 , gnome-bluetooth
@@ -148,6 +149,7 @@ stdenv.mkDerivation rec {
     gobject-introspection
 
     # recording
+    pipewire
     gst_all_1.gstreamer
     gst_all_1.gst-plugins-base
     gst_all_1.gst-plugins-good
@@ -185,7 +187,7 @@ stdenv.mkDerivation rec {
 
   postFixup = ''
     # The services need typelibs.
-    for svc in org.gnome.Shell.Extensions org.gnome.Shell.Notifications; do
+    for svc in org.gnome.Shell.Extensions org.gnome.Shell.Notifications org.gnome.Shell.Screencast; do
       wrapGApp $out/share/gnome-shell/$svc
     done
   '';
