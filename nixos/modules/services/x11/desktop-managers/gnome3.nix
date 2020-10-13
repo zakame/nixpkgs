@@ -457,7 +457,7 @@ in
       environment.systemPackages = (with pkgs.gnome3; removePackagesByName [
         dconf-editor
         devhelp
-        gnome-builder
+        pkgs.gnome-builder
         # boxes would make sense in this option, however
         # it doesn't function well enough to be included
         # in default configurations.
