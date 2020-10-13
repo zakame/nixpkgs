@@ -79,12 +79,10 @@ stdenv.mkDerivation rec {
   ];
 
   mesonFlags = [
-    # TODO: figure out wrapping unit tests, some of them fail on missing gsettings-desktop-schemas
-    # "-Dfunctional_tests=true"
     "-Ddocs=true"
   ];
 
-  doCheck = false;
+  doCheck = true;
 
   postPatch = ''
     patchShebangs utils/g-ir-merge/g-ir-merge
@@ -102,9 +100,17 @@ stdenv.mkDerivation rec {
     # though, so we need to replace the absolute path with a local one during build.
     # We are using a symlink that will be overridden during installation.
     mkdir -p $out/lib
-    ln -s $PWD/src/libtracker-sparql-backend/libtracker-sparql-2.0.so $out/lib/libtracker-sparql-2.0.so.0
-    ln -s $PWD/src/libtracker-miner/libtracker-miner-2.0.so $out/lib/libtracker-miner-2.0.so.0
-    ln -s $PWD/src/libtracker-data/libtracker-data.so $out/lib/libtracker-data.so
+    ln -s $PWD/src/libtracker-sparql/libtracker-sparql-3.0.so $out/lib/libtracker-sparql-3.0.so.0
+  '';
+
+  checkPhase = ''
+    runHook preCheck
+
+    dbus-run-session \
+      --config-file=${dbus.daemon}/share/dbus-1/session.conf \
+      meson test --print-errorlogs
+
+    runHook postCheck
   '';
 
   postCheck = ''
