@@ -1,5 +1,6 @@
 { fetchurl
 , fetchFromGitLab
+, fetchpatch
 , stdenv
 , substituteAll
 , accountsservice
@@ -147,6 +148,13 @@ stdenv.mkDerivation rec {
       gnome_desktop = gnome-desktop;
       inherit glibc libgnomekbd tzdata;
       inherit cups networkmanagerapplet;
+    })
+
+    # Fix double free when leaving user accounts panel.
+    # https://gitlab.gnome.org/GNOME/gnome-control-center/merge_requests/853
+    (fetchpatch {
+      url = "https://gitlab.gnome.org/GNOME/gnome-control-center/commit/e80b4b5f58f448c5a3d38721f7bba32c413d46e7.patch";
+      sha256 = "GffsSU/uNS0Fg2lXbOuD/BrWBT4D2VKgWNGifG0FBUw=";
     })
   ];
 
