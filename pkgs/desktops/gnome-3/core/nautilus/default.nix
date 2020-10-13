@@ -39,6 +39,17 @@ stdenv.mkDerivation rec {
     sha256 = "1zfh48ibap6jnw20rxls7nbv4zzqs6n5abr2dzyvfx5p2cmq2gha";
   };
 
+  patches = [
+    # Allow changing extension directory using environment variable.
+    ./extension_dir.patch
+
+    # Hardcode required paths.
+    (substituteAll {
+      src = ./fix-paths.patch;
+      inherit tracker;
+    })
+  ];
+
   nativeBuildInputs = [
     desktop-file-utils
     gettext
@@ -85,10 +96,6 @@ stdenv.mkDerivation rec {
   postPatch = ''
     patchShebangs build-aux/meson/postinstall.py
   '';
-
-  patches = [
-    ./extension_dir.patch
-  ];
 
   passthru = {
     updateScript = gnome3.updateScript {
