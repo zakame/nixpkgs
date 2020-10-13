@@ -156,6 +156,10 @@ stdenv.mkDerivation rec {
       url = "https://gitlab.gnome.org/GNOME/gnome-control-center/commit/e80b4b5f58f448c5a3d38721f7bba32c413d46e7.patch";
       sha256 = "GffsSU/uNS0Fg2lXbOuD/BrWBT4D2VKgWNGifG0FBUw=";
     })
+    (fetchpatch {
+      url = "https://gitlab.gnome.org/GNOME/gnome-control-center/commit/64686cfee330849945f6ff4dcc43393eb1a6e59c.patch";
+      sha256 = "4VJU0q6qOtGzd/hmDncckInfEjCkC8+lXmDgxwc4VJU=";
+    })
   ];
 
   postPatch = ''
