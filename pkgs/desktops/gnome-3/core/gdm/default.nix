@@ -148,6 +148,9 @@ stdenv.mkDerivation rec {
     done
     # Ensure the DESTDIR is removed.
     rmdir "${DESTDIR}/nix/store" "${DESTDIR}/nix" "${DESTDIR}"
+
+    # We are setting DESTDIR so the post-install script does not compile the schemas.
+    glib-compile-schemas "$out/share/glib-2.0/schemas"
   '';
 
   # HACK: We want to install configuration files to $out/etc
