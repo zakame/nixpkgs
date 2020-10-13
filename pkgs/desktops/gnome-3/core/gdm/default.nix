@@ -63,7 +63,8 @@ stdenv.mkDerivation rec {
     "-Dudev-dir=${placeholder "out"}/lib/udev/rules.d"
     "-Dsystemdsystemunitdir=${placeholder "out"}/lib/systemd/system"
     "-Dsystemduserunitdir=${placeholder "out"}/lib/systemd/user"
-    "-Dsysconfsubdir=/etc"
+    "--sysconfdir=/etc"
+    "--localstatedir=/var"
   ];
 
   nativeBuildInputs = [
@@ -145,7 +146,8 @@ stdenv.mkDerivation rec {
         rsync --archive "${DESTDIR}/''${!o}" "$(dirname "''${!o}")"
         rm --recursive "${DESTDIR}/''${!o}"
     done
-    rmdir --ignore-fail-on-non-empty --parents "${DESTDIR}/nix/store"
+    # Ensure the DESTDIR is removed.
+    rmdir "${DESTDIR}/nix/store" "${DESTDIR}/nix" "${DESTDIR}"
   '';
 
   # HACK: We want to install configuration files to $out/etc
