@@ -113,7 +113,7 @@ stdenv.mkDerivation rec {
   patches = [
     (substituteAll {
       src = ./fix-paths.patch;
-      inherit asciidoc tracker;
+      inherit asciidoc;
     })
   ];
 
