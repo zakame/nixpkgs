@@ -125,7 +125,7 @@ let self = stdenv.mkDerivation rec {
   '';
 
   # Install udev files into our own tree.
-  PKG_CONFIG_UDEV_UDEVDIR = "${placeholder "out"}/lib/udev/rules.d";
+  PKG_CONFIG_UDEV_UDEVDIR = "${placeholder "out"}/lib/udev";
 
   passthru = {
     libdir = "${self}/lib/mutter-6";
