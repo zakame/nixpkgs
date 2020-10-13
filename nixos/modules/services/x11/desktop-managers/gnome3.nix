@@ -463,7 +463,7 @@ in
         # in default configurations.
         # https://github.com/NixOS/nixpkgs/issues/60908
         /* gnome-boxes */
-      ]);
+      ] config.environment.gnome3.excludePackages);
 
       services.sysprof.enable = true;
     })
