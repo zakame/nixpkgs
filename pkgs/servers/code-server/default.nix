@@ -12,14 +12,14 @@ let
 
 in stdenv.mkDerivation rec {
   pname = "code-server";
-  version = "3.4.1";
-  commit = "d3773c11f147bdd7a4f5acfefdee23c26f069e76";
+  version = "3.6.1";
+  commit = "62735da69466a444561ab9b1115dc7c4d496d455";
 
   src = fetchFromGitHub {
     owner = "cdr";
     repo = "code-server";
-    rev = version;
-    sha256 = "PfDD0waloppGZ09zCQ9ggBeVL/Dhfv6QmEs/fs7QLtA=";
+    rev = "v${version}";
+    sha256 = "08k1qg41fxx5jl2kcipajgsqc27701jfgbq8bbcgcirvmqfszf1a";
     fetchSubmodules = true;
   };
 
@@ -47,7 +47,7 @@ in stdenv.mkDerivation rec {
 
     # to get hash values use nix-build -A code-server.yarnPrefetchCache
     outputHash = {
-      x86_64-linux = "Zze2hEm2Np+SyQ0KXy5CZr5wilZbHBYXNYcRJBUUkQo=";
+      x86_64-linux = "1fqkkyp2gmrrn3izp2x6fpc45aqa07papc6flcwckd1qbf2f2csj";
       aarch64-linux = "LiIvGuBismWSL2yV2DuKUWDjIzuIQU/VVxtiD4xJ+6Q=";
     }.${system} or (throw "Unsupported system ${system}");
   };
@@ -87,6 +87,20 @@ in stdenv.mkDerivation rec {
     # inject git commit
     substituteInPlace ci/build/build-release.sh \
       --replace '$(git rev-parse HEAD)' "$commit"
+
+    # remove forced git config in vscode npm postinstall:
+    # https://github.com/microsoft/vscode/commit/6968ef84a0e1a857cc92a0ec457c15e7a7acfc2a
+    sed -i "/^cp.execSync('git config pull.rebase true');$/d" \
+      lib/vscode/build/npm/postinstall.js
+
+    # remove setting up coder-cloud-agent
+    # https://github.com/cdr/code-server/pull/2086
+    sed -i "21,26d" \
+      ci/build/build-code-server.sh
+    sed -i "27,30d" \
+      ci/build/npm-postinstall.sh
+    sed -i "62,63d" \
+      ci/build/build-release.sh
 
     # remove all built-in extensions, as these are 3rd party extensions that
     # gets downloaded from vscode marketplace
@@ -137,7 +151,7 @@ in stdenv.mkDerivation rec {
     # rebuild binaries, we use npm here, as yarn does not provider alternative
     # that would not atempt to try to reinstall everything and break out
     # patching attempts
-    npm rebuild --prefix lib/vscode --update-binary
+    npm rebuild --prefix lib/vscode --update-binary --ignore-scripts
 
     # run postinstall scripts, which eventually do yarn install on all
     # additional requirements
