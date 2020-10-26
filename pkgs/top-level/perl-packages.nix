@@ -18747,6 +18747,20 @@ let
     };
   };
 
+  SyntaxKeywordTry = buildPerlModule {
+    pname = "Syntax-Keyword-Try";
+    version = "0.18";
+    src = fetchurl {
+      url = "mirror://cpan/authors/id/P/PE/PEVANS/Syntax-Keyword-Try-0.18.tar.gz";
+      sha256 = "1v3qd8q7jpc41bgf07ir3qxglq1bgh02vsjdlmv1jp0wdf6hx894";
+    };
+    meta = {
+      description = "A 'try/catch/finally' syntax for Perl";
+      license = with stdenv.lib.licenses; [ artistic1 gpl1Plus ];
+      maintainers = [ maintainers.zakame ];
+    };
+  };
+
   SysMmap = buildPerlPackage {
     pname = "Sys-Mmap";
     version = "0.20";
